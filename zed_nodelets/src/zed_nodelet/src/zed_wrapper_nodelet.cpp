@@ -30,9 +30,11 @@
 
 #include "zed_interfaces/Object.h"
 #include "zed_interfaces/ObjectsStamped.h"
-#include <zed_interfaces/PlaneStamped.h>
+#include "zed_interfaces/PlaneStamped.h"
 
 //#define DEBUG_SENS_TS 1
+
+#define ZED_SDK_PORT 10000
 
 namespace zed_nodelets
 {
@@ -180,7 +182,12 @@ void ZEDWrapperNodelet::onInit()
   mTfListener.reset(new tf2_ros::TransformListener(*mTfBuffer));
 
   // Try to initialize the ZED
-  if (!mSvoFilepath.empty() || !mRemoteStreamAddr.empty())
+  if (mSimEnabled)  // Simulation?
+  {
+    int sim_port = ZED_SDK_PORT + 2 * mSimCamId;
+    mZedParams.input.setFromStream("localhost", sim_port);
+  }
+  else if (!mSvoFilepath.empty() || !mRemoteStreamAddr.empty())  // Input for SVO or ZED Network Stream
   {
     if (!mSvoFilepath.empty())
     {
@@ -206,7 +213,7 @@ void ZEDWrapperNodelet::onInit()
 
     mSvoMode = true;
   }
-  else
+  else  // Live input
   {
     mZedParams.camera_fps = mCamFrameRate;
     mZedParams.camera_resolution = static_cast<sl::RESOLUTION>(mCamResol);
@@ -665,10 +672,36 @@ void ZEDWrapperNodelet::onInit()
 
 void ZEDWrapperNodelet::readParameters()
 {
-  NODELET_INFO_STREAM("*** GENERAL PARAMETERS ***");
+  // ----> Simulation parameters
+  mNhNs.getParam("sim_active", mSimEnabled);
+  NODELET_INFO_STREAM("*** SIMULATION Mode:\t\t-> " << (mSimEnabled ? "ENABLED" : "DISABLED"));
+
+  if (mSimEnabled)
+  {
+    mNhNs.getParam("sim_zed_id", mSimCamId);
+    NODELET_INFO_STREAM(" * SIMULATION Camera ID\t\t-> " << mSimCamId);
+  }
+
+  bool sim_time = false;
+  mNhNs.getParam("/use_sim_time", sim_time);
+  if (mSimEnabled && !sim_time)
+  {
+    NODELET_WARN(
+        "!!! SIMULATION Mode is active, but the parameter '/use_time_time' is not set. The ZED node cannot work "
+        "correctly.");
+  }
+
+  if (!mSimEnabled && sim_time)
+  {
+    NODELET_WARN(
+        "!!! SIMULATION Mode is not active, but the parameter '/use_time_time' is set. The behaviors of the ZED node "
+        "could be unpredictable.");
+  }
+  // <---- Simulation parameters
 
   // ----> General
-  // Get parameters from param files
+  NODELET_INFO_STREAM("*** GENERAL PARAMETERS ***");
+
   mNhNs.getParam("general/camera_name", mCameraName);
   NODELET_INFO_STREAM(" * Camera Name\t\t\t-> " << mCameraName.c_str());
   int resol;
@@ -1684,20 +1717,27 @@ void ZEDWrapperNodelet::start_pos_tracking()
 
   posTrackParams.set_floor_as_origin = mFloorAlignment;
 
-  if (mAreaMemDbPath != "" && !sl_tools::file_exist(mAreaMemDbPath))
+  if (mAreaMemory)
   {
-    posTrackParams.area_file_path = "";
-    NODELET_WARN_STREAM("area_memory_db_path [" << mAreaMemDbPath << "] doesn't exist or is unreachable. ");
-    if (mSaveAreaMapOnClosing)
+    if (mAreaMemDbPath != "" && !sl_tools::file_exist(mAreaMemDbPath))
     {
-      NODELET_INFO_STREAM(
-          "The file will be automatically created when closing the node or calling the "
-          "'save_area_map' service if a valid Area Memory is available.");
+      posTrackParams.area_file_path = "";
+      NODELET_WARN_STREAM("area_memory_db_path [" << mAreaMemDbPath << "] doesn't exist or is unreachable. ");
+      if (mSaveAreaMapOnClosing)
+      {
+        NODELET_INFO_STREAM(
+            "The file will be automatically created when closing the node or calling the "
+            "'save_area_map' service if a valid Area Memory is available.");
+      }
+    }
+    else
+    {
+      posTrackParams.area_file_path = mAreaMemDbPath.c_str();
     }
   }
   else
   {
-    posTrackParams.area_file_path = mAreaMemDbPath.c_str();
+    posTrackParams.area_file_path = ""; 
   }
 
   posTrackParams.enable_imu_fusion = mImuFusion;

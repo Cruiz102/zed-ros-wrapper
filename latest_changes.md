@@ -1,6 +1,12 @@
 LATEST CHANGES
 ==============
 
+2022-07-15
+----------
+* Fix Area Memory Warning when Area Memory is disabled
+* Add parameters to enable simulation mode
+* Handle simulation mode
+
 2022-07-21
 ----------
 - Fix TF timestamp issue in SVO mode

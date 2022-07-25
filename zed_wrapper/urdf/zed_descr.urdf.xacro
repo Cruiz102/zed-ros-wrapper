@@ -19,6 +19,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <robot name="stereolabs_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <link name="$(arg base_frame)" />
+
   <xacro:arg name="camera_name"   default="zed" />
   <xacro:arg name="camera_model"  default="zed" />
   <xacro:arg name="base_frame"    default="base_link" />
@@ -34,5 +37,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <origin xyz="$(arg cam_pos_x) $(arg cam_pos_y) $(arg cam_pos_z)" rpy="$(arg cam_roll) $(arg cam_pitch) $(arg cam_yaw)" />
   </xacro:zed_camera>
 
-  <link name="$(arg base_frame)" />
+  
 </robot>

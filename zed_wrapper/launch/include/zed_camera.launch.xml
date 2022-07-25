@@ -17,6 +17,10 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <launch>
+    <!-- Camera simulation -->
+    <arg name="sim_active" default="false" /><!-- Set to true if simulating the camera in an external simulator -->
+    <arg name="sim_zed_id" default="0" /> <!-- ID of the simulated camera' -->
+
     <!-- Camera Model and Name -->
     <arg name="camera_name"           default="zed" /> <!-- The name you want -->
     <arg name="camera_model"          default="zed" /> <!-- 'zed' or 'zedm' or 'zed2' -->
@@ -69,6 +73,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <node name="$(arg node_name)" pkg="zed_wrapper" type="zed_wrapper_node" output="screen" required="true"><!-- launch-prefix="valgrind" -->
         <rosparam file="$(find zed_wrapper)/params/common.yaml" command="load" />
         <rosparam file="$(find zed_wrapper)/params/$(arg camera_model).yaml" command="load" />
+        <!-- Camera Simulation -->
+        <param name="sim_active"                        value="$(arg sim_active)" />
+
+        <!-- Camera Simulation ID-->
+        <param name="sim_zed_id"                        value="$(arg sim_zed_id)" />
 
         <!-- Camera name -->
         <param name="general/camera_name"               value="$(arg camera_name)" />
