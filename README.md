@@ -1,5 +1,7 @@
 ![](./images/Picto+STEREOLABS_Black.jpg)
 
+# !!! BRANCH UNDER DEVELOPMENT. NOT YET WORKING !!!
+
 # Stereolabs ZED Camera - ROS Noetic Ninjemis Integration
 
 This package lets you use the ZED stereo camera with ROS. It outputs the camera left and right images, depth map, point cloud, pose information and supports the use of multiple ZED cameras.
