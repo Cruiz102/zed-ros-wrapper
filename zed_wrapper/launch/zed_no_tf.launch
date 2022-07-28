@@ -58,7 +58,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         cam_pos_z:=$(arg cam_pos_z)
                         cam_roll:=$(arg cam_roll)
                         cam_pitch:=$(arg cam_pitch)
-                        cam_yaw:=$(arg cam_yaw)"
+                        cam_yaw:=$(arg cam_yaw)
+                        mesh_file:=$(find zed_interfaces)/meshes/$(arg camera_model).stl"
         />
 
         <node name="zed_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">

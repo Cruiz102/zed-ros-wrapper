@@ -1,6 +1,10 @@
 LATEST CHANGES
 ==============
 
+2022-07-28
+----------
+* Change STL filepath resolving for xacro file (useful for simulation)
+
 2022-07-15
 ----------
 * Fix Area Memory Warning when Area Memory is disabled
