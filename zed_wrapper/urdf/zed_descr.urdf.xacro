@@ -18,25 +18,66 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<robot name="stereolabs_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="stereolabs_camera" xmlns:xacro="http://ros.org/wiki/xacro">  
 
-  <link name="$(arg base_frame)" />
-
-  <xacro:arg name="camera_name"   default="zed" />
-  <xacro:arg name="camera_model"  default="zed" />
-  <xacro:arg name="base_frame"    default="base_link" />
-  <xacro:arg name="cam_pos_x"     default="0.0" />
-  <xacro:arg name="cam_pos_y"     default="0.0" />
-  <xacro:arg name="cam_pos_z"     default="0.0" />
-  <xacro:arg name="cam_roll"      default="0.0" />
-  <xacro:arg name="cam_pitch"     default="0.0" />
-  <xacro:arg name="cam_yaw"       default="0.0" />
-  <xacro:arg name="mesh_file"     default="" />
+  <xacro:arg name="camera_name"     default="zed" />
+  <xacro:arg name="camera_model"    default="zed" />
+  <xacro:arg name="use_base_frame"  default="true" />  
+  <xacro:arg name="base_frame"      default="base_link" />
+  <xacro:arg name="cam_pos_x"       default="0.0" />
+  <xacro:arg name="cam_pos_y"       default="0.0" />
+  <xacro:arg name="cam_pos_z"       default="0.0" />
+  <xacro:arg name="cam_roll"        default="0.0" />
+  <xacro:arg name="cam_pitch"       default="0.0" />
+  <xacro:arg name="cam_yaw"         default="0.0" />
+  <xacro:arg name="mesh_file"       default="" />
 
   <xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro" />
-  <xacro:zed_camera name="$(arg camera_name)" model="$(arg camera_model)" parent="$(arg base_frame)" mesh_file="$(arg mesh_file)">
+  <xacro:zed_camera name="$(arg camera_name)" model="$(arg camera_model)" declare_parent="$(arg use_base_frame)" parent="$(arg base_frame)" mesh_file="$(arg mesh_file)">
     <origin xyz="$(arg cam_pos_x) $(arg cam_pos_y) $(arg cam_pos_z)" rpy="$(arg cam_roll) $(arg cam_pitch) $(arg cam_yaw)" />
-  </xacro:zed_camera>
+  </xacro:zed_camera>  
 
-  
+  <gazebo>
+    <!-- <plugin name="sl_simul::ZedSystem" filename="/home/walter/devel/Gazebo/build-zed-gazebo-Desktop_Qt_5_15_2_GCC_64bit-Release/zed_plugin/libZedIgnitionPlugin.so"> -->
+    <plugin name="sl_simul::ZedSystem" filename="ZedIgnitionPlugin">
+      <zed_model>zed</zed_model>
+      <zed_serial_number>510</zed_serial_number>
+      <zed_resolution>HD720</zed_resolution>
+      <zed_framerate>30</zed_framerate>
+      <zed_sim_idx>0</zed_sim_idx>
+    </plugin>
+  </gazebo>
+  <gazebo reference="$(arg camera_name)_base_link">
+      <sensor name="zed_left" type="camera">
+        <pose>0 0.06 0 0 0 0</pose>
+        <update_rate>30</update_rate>
+        <always_on>1</always_on>
+        <topic>zed/left</topic>
+        <camera>
+          <image>
+            <format>RGB_INT8</format>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>3000</far>
+          </clip>
+        </camera>
+      </sensor>
+      <sensor name="zed_right" type="camera">
+        <pose>0 -0.06 0 0 0 0</pose>
+        <update_rate>30</update_rate>
+        <always_on>1</always_on>
+        <topic>zed/right</topic>
+        <camera>
+          <image>
+            <format>RGB_INT8</format>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>3000</far>
+          </clip>
+        </camera>
+      </sensor>
+  </gazebo> 
+
 </robot>

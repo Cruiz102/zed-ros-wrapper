@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="stream"                default="" /> <!-- <arg name="stream" default="<ip_address>:<port>"> -->
 
     <!-- Base frame -->
+    <arg name="use_base_frame"        default="true" />
     <arg name="base_frame"            default="base_link" />
 
     <!-- Publish ZED urdf -->
@@ -56,13 +57,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                command="$(find xacro)/xacro '$(find zed_wrapper)/urdf/zed_descr.urdf.xacro'
                         camera_name:=$(arg camera_name)
                         camera_model:=$(arg camera_model)
+                        use_base_frame:='$(arg use_base_frame)'
                         base_frame:=$(arg base_frame)
                         cam_pos_x:=$(arg cam_pos_x)
                         cam_pos_y:=$(arg cam_pos_y)
                         cam_pos_z:=$(arg cam_pos_z)
                         cam_roll:=$(arg cam_roll)
                         cam_pitch:=$(arg cam_pitch)
-                        cam_yaw:=$(arg cam_yaw)
+                        cam_yaw:=$(arg cam_yaw)                        
                         mesh_file:=$(find zed_interfaces)/meshes/$(arg camera_model).stl"
         />
 
