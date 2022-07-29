@@ -38,8 +38,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   </xacro:zed_camera>  
 
   <gazebo>
-    <!-- <plugin name="sl_simul::ZedSystem" filename="/home/walter/devel/Gazebo/build-zed-gazebo-Desktop_Qt_5_15_2_GCC_64bit-Release/zed_plugin/libZedIgnitionPlugin.so"> -->
-    <plugin name="sl_simul::ZedSystem" filename="ZedIgnitionPlugin">
+    <plugin name="sl_simul::ZedSystem" filename="/home/walter/devel/Gazebo/build-zed-gazebo-Desktop_Qt_5_15_2_GCC_64bit-Release/zed_plugin/libZedIgnitionPlugin.so">
+    <!-- <plugin name="sl_simul::ZedSystem" filename="ZedIgnitionPlugin"> -->
       <zed_model>zed</zed_model>
       <zed_serial_number>510</zed_serial_number>
       <zed_resolution>HD720</zed_resolution>

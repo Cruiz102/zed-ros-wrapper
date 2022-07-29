@@ -34,7 +34,7 @@
 
 //#define DEBUG_SENS_TS 1
 
-#define ZED_SDK_PORT 10000
+#define ZED_SDK_PORT 30000
 
 namespace zed_nodelets
 {
