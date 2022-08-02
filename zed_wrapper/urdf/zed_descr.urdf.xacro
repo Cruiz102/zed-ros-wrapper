@@ -43,14 +43,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       <zed_model>zed</zed_model>
       <zed_serial_number>510</zed_serial_number>
       <zed_resolution>HD720</zed_resolution>
-      <zed_framerate>30</zed_framerate>
+      <zed_framerate>15</zed_framerate>
       <zed_sim_idx>0</zed_sim_idx>
+      <always_on>1</always_on>
     </plugin>
   </gazebo>
   <gazebo reference="$(arg camera_name)_base_link">
       <sensor name="zed_left" type="camera">
         <pose>0 0.06 0 0 0 0</pose>
-        <update_rate>30</update_rate>
+        <update_rate>15</update_rate>
         <always_on>1</always_on>
         <topic>zed/left</topic>
         <camera>
@@ -59,13 +60,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           </image>
           <clip>
             <near>0.01</near>
-            <far>3000</far>
+            <far>300</far>
           </clip>
         </camera>
       </sensor>
       <sensor name="zed_right" type="camera">
         <pose>0 -0.06 0 0 0 0</pose>
-        <update_rate>30</update_rate>
+        <update_rate>15</update_rate>
         <always_on>1</always_on>
         <topic>zed/right</topic>
         <camera>
@@ -74,10 +75,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           </image>
           <clip>
             <near>0.01</near>
-            <far>3000</far>
+            <far>300</far>
           </clip>
         </camera>
       </sensor>
   </gazebo> 
+  <gazebo>
+    <scene>
+      <ambient>1 1 1 1</ambient>
+      <background>0.3 0.7 0.9 1</background>
+      <shadows>0</shadows>
+      <grid>1</grid>
+    </scene>
+  </gazebo>
 
 </robot>
