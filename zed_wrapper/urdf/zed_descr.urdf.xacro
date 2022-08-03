@@ -37,9 +37,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <origin xyz="$(arg cam_pos_x) $(arg cam_pos_y) $(arg cam_pos_z)" rpy="$(arg cam_roll) $(arg cam_pitch) $(arg cam_yaw)" />
   </xacro:zed_camera>  
 
-  <gazebo>
-    <plugin name="sl_simul::ZedSystem" filename="/home/walter/devel/Gazebo/build-zed-gazebo-Desktop_Qt_5_15_2_GCC_64bit-Release/zed_plugin/libZedIgnitionPlugin.so">
-    <!-- <plugin name="sl_simul::ZedSystem" filename="ZedIgnitionPlugin"> -->
+  <gazebo>    
+    <plugin name="sl_simul::ZedSystem" filename="ZedIgnitionPlugin">
       <zed_model>zed</zed_model>
       <zed_serial_number>510</zed_serial_number>
       <zed_resolution>HD720</zed_resolution>
@@ -53,7 +52,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <pose>0 0.06 0 0 0 0</pose>
         <update_rate>15</update_rate>
         <always_on>1</always_on>
-        <topic>zed/left</topic>
+        <topic>/zed/left</topic>
         <camera>
           <image>
             <format>RGB_INT8</format>
@@ -68,7 +67,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <pose>0 -0.06 0 0 0 0</pose>
         <update_rate>15</update_rate>
         <always_on>1</always_on>
-        <topic>zed/right</topic>
+        <topic>/zed/right</topic>
         <camera>
           <image>
             <format>RGB_INT8</format>
