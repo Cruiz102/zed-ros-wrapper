@@ -25,8 +25,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     Parameters:
       - name: the camera's name.  should match the parameter sent to the launch file for this camera
       - model: the tye of camera, one of zed, zedm, zed2, zed2i
-      - parent: the parent link of the camera.  must be defined in the URDF file that uses this macro
-      - origin: the xyz/rpy offset from the parent link
+      - parent: [REQUIRED] the parent link of the camera.  must be defined in the URDF file that uses this macro
+      - mesh_file: [REQUIRED] the file containing the 3D model of the camera
   -->
 
 	<xacro:macro name="zed_camera" params="name=zed model=zed parent mesh_file">
@@ -59,8 +59,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<xacro:property name="bottom_slope" value="0.0" />
 			<xacro:property name="screw_offset_x" value="-0.01" />
 			<xacro:property name="optical_offset_x" value="-0.01" />
-		</xacro:if>
-
+		</xacro:if> 
+    
     <!-- Camera mounting point (the threaded screw hole in the bottom) -->
     <link name="${name}_base_link" />
 

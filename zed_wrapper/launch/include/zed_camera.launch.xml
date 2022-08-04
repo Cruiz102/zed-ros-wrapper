@@ -18,9 +18,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <launch>
     <!-- Camera simulation -->
-    <arg name="sim_active"            default="false" /><!-- Set to true if simulating the camera in an external simulator -->
-    <arg name="sim_zed_id"            default="0" /> <!-- ID of the simulated camera' -->
-    <arg name="zed_start_delay"       default="0.0" /> <!-- seconds to wait before starting the ZED Node. Important for simulation-->
+    <arg name="sim_active"            default="false" />    <!-- Set to true if simulating the camera in an external simulator -->
+    <arg name="sim_zed_id"            default="0" />        <!-- ID of the simulated camera' -->
+    <arg name="zed_start_delay"       default="0.0" />      <!-- seconds to wait before starting the ZED Node. -->
 
     <!-- Camera Model and Name -->
     <arg name="camera_name"           default="zed" /> <!-- The name you want -->
@@ -33,7 +33,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="stream"                default="" /> <!-- <arg name="stream" default="<ip_address>:<port>"> -->
 
     <!-- Base frame -->
-    <arg name="use_base_frame"        default="true" />
     <arg name="base_frame"            default="base_link" />
 
     <!-- Publish ZED urdf -->
@@ -58,7 +57,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                command="$(find xacro)/xacro '$(find zed_wrapper)/urdf/zed_descr.urdf.xacro'
                         camera_name:=$(arg camera_name)
                         camera_model:=$(arg camera_model)
-                        use_base_frame:='$(arg use_base_frame)'
                         base_frame:=$(arg base_frame)
                         cam_pos_x:=$(arg cam_pos_x)
                         cam_pos_y:=$(arg cam_pos_y)
