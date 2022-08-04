@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <!--
 Copyright (c) 2020, STEREOLABS.
 
@@ -17,75 +16,29 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
+<robot name="stereolabs_camera_mount" xmlns:xacro="http://ros.org/wiki/xacro">
 
-<robot name="stereolabs_camera" xmlns:xacro="http://ros.org/wiki/xacro">  
+	<xacro:arg name="camera_name" default="zed" />
+	<xacro:arg name="camera_model" default="zed" />
+	<xacro:arg name="base_frame" default="base_link" />
+	<xacro:arg name="cam_pos_x" default="0.0" />
+	<xacro:arg name="cam_pos_y" default="0.0" />
+	<xacro:arg name="cam_pos_z" default="0.0" />
+	<xacro:arg name="cam_roll" default="0.0" />
+	<xacro:arg name="cam_pitch" default="0.0" />
+	<xacro:arg name="cam_yaw" default="0.0" />
 
-  <xacro:arg name="camera_name"     default="zed" />
-  <xacro:arg name="camera_model"    default="zed" />
-  <xacro:arg name="use_base_frame"  default="true" />  
-  <xacro:arg name="base_frame"      default="base_link" />
-  <xacro:arg name="cam_pos_x"       default="0.0" />
-  <xacro:arg name="cam_pos_y"       default="0.0" />
-  <xacro:arg name="cam_pos_z"       default="0.0" />
-  <xacro:arg name="cam_roll"        default="0.0" />
-  <xacro:arg name="cam_pitch"       default="0.0" />
-  <xacro:arg name="cam_yaw"         default="0.0" />
-  <xacro:arg name="mesh_file"       default="" />
+  <!-- Robot Base Link-->
+  <link name="$(arg base_frame)" />
 
-  <xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro" />
-  <xacro:zed_camera name="$(arg camera_name)" model="$(arg camera_model)" declare_parent="$(arg use_base_frame)" parent="$(arg base_frame)" mesh_file="$(arg mesh_file)">
+  <!-- Camera Joint-->
+  <joint name="$(arg camera_name)_base_joint" type="fixed">
+    <parent link="$(arg base_frame)"/>
+    <child link="$(arg camera_name)_base_link"/>
     <origin xyz="$(arg cam_pos_x) $(arg cam_pos_y) $(arg cam_pos_z)" rpy="$(arg cam_roll) $(arg cam_pitch) $(arg cam_yaw)" />
-  </xacro:zed_camera>  
+  </joint>
 
-  <gazebo>    
-    <plugin name="sl_simul::ZedSystem" filename="ZedIgnitionPlugin">
-      <zed_model>zed</zed_model>
-      <zed_serial_number>510</zed_serial_number>
-      <zed_resolution>HD720</zed_resolution>
-      <zed_framerate>15</zed_framerate>
-      <zed_sim_idx>0</zed_sim_idx>
-      <always_on>1</always_on>
-    </plugin>
-  </gazebo>
-  <gazebo reference="$(arg camera_name)_base_link">
-      <sensor name="zed_left" type="camera">
-        <pose>0 0.06 0 0 0 0</pose>
-        <update_rate>15</update_rate>
-        <always_on>1</always_on>
-        <topic>/zed/left</topic>
-        <camera>
-          <image>
-            <format>RGB_INT8</format>
-          </image>
-          <clip>
-            <near>0.01</near>
-            <far>300</far>
-          </clip>
-        </camera>
-      </sensor>
-      <sensor name="zed_right" type="camera">
-        <pose>0 -0.06 0 0 0 0</pose>
-        <update_rate>15</update_rate>
-        <always_on>1</always_on>
-        <topic>/zed/right</topic>
-        <camera>
-          <image>
-            <format>RGB_INT8</format>
-          </image>
-          <clip>
-            <near>0.01</near>
-            <far>300</far>
-          </clip>
-        </camera>
-      </sensor>
-  </gazebo> 
-  <gazebo>
-    <scene>
-      <ambient>1 1 1 1</ambient>
-      <background>0.3 0.7 0.9 1</background>
-      <shadows>0</shadows>
-      <grid>1</grid>
-    </scene>
-  </gazebo>
+	<xacro:include filename="$(find zed_wrapper)/urdf/zed_macro.urdf.xacro" />
+	<xacro:zed_camera name="$(arg camera_name)" model="$(arg camera_model)" parent="$(arg base_frame)" />
 
 </robot>
