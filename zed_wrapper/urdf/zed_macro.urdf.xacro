@@ -65,6 +65,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <link name="${name}_base_link" />
 
 		<!-- Camera Center -->
+    <joint name="${name}_camera_center_joint" type="fixed">
+      <parent link="${name}_base_link"/>
+      <child link="${name}_camera_center"/>
+      <origin xyz="0 0 ${height/2}" rpy="0 ${bottom_slope} 0" />
+    </joint>
 		<link name="${name}_camera_center">
 			<visual>
 				<origin xyz="${screw_offset_x} 0 0" rpy="0 0 0"/>
@@ -79,63 +84,67 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				</geometry>
 			</collision>
 		</link>
-		<joint name="${name}_camera_center_joint" type="fixed">
-			<parent link="${name}_base_link"/>
-			<child link="${name}_camera_center"/>
-			<origin xyz="0 0 ${height/2}" rpy="0 ${bottom_slope} 0" />
-		</joint>
+		
 		<!-- Left Camera -->
+    <joint name="${name}_left_camera_joint" type="fixed">
+      <parent link="${name}_camera_center"/>
+      <child link="${name}_left_camera_frame"/>
+      <origin xyz="0 ${baseline/2} 0" rpy="0 0 0" />
+    </joint>
 		<link name="${name}_left_camera_frame" />
-		<joint name="${name}_left_camera_joint" type="fixed">
-			<parent link="${name}_camera_center"/>
-			<child link="${name}_left_camera_frame"/>
-			<origin xyz="0 ${baseline/2} 0" rpy="0 0 0" />
-		</joint>
+		
+    <joint name="${name}_left_camera_optical_joint" type="fixed">
+      <origin xyz="${optical_offset_x} 0 0" rpy="-${M_PI/2} 0.0 -${M_PI/2}"/>
+      <parent link="${name}_left_camera_frame"/>
+      <child link="${name}_left_camera_optical_frame"/>
+    </joint>
 		<link name="${name}_left_camera_optical_frame"/>
-		<joint name="${name}_left_camera_optical_joint" type="fixed">
-			<origin xyz="${optical_offset_x} 0 0" rpy="-${M_PI/2} 0.0 -${M_PI/2}"/>
-			<parent link="${name}_left_camera_frame"/>
-			<child link="${name}_left_camera_optical_frame"/>
-		</joint>
+		
 		<!-- Right Camera -->
+    <joint name="${name}_right_camera_joint" type="fixed">
+      <parent link="${name}_camera_center"/>
+      <child link="${name}_right_camera_frame"/>
+      <origin xyz="0 -${baseline/2} 0" rpy="0 0 0" />
+    </joint>
 		<link name="${name}_right_camera_frame" />
-		<joint name="${name}_right_camera_joint" type="fixed">
-			<parent link="${name}_camera_center"/>
-			<child link="${name}_right_camera_frame"/>
-			<origin xyz="0 -${baseline/2} 0" rpy="0 0 0" />
-		</joint>
+		
+    <joint name="${name}_right_camera_optical_joint" type="fixed">
+      <origin xyz="${optical_offset_x} 0 0" rpy="-${M_PI/2} 0.0 -${M_PI/2}"/>
+      <parent link="${name}_right_camera_frame"/>
+      <child link="${name}_right_camera_optical_frame"/>
+    </joint>
 		<link name="${name}_right_camera_optical_frame"/>
-		<joint name="${name}_right_camera_optical_joint" type="fixed">
-			<origin xyz="${optical_offset_x} 0 0" rpy="-${M_PI/2} 0.0 -${M_PI/2}"/>
-			<parent link="${name}_right_camera_frame"/>
-			<child link="${name}_right_camera_optical_frame"/>
-		</joint>
+		
 		<!-- ZED2 Sensors -->
 		<xacro:if value="${model == 'zed2' or model == 'zed2i'}">
+      <joint name="${name}_mag_joint" type="fixed">
+        <parent link="${name}_camera_center"/>
+        <child link="${name}_mag_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </joint>
 			<link name="${name}_mag_link" />
-			<joint name="${name}_mag_joint" type="fixed">
-				<parent link="${name}_camera_center"/>
-				<child link="${name}_mag_link"/>
-				<origin xyz="0 0 0" rpy="0 0 0" />
-			</joint>
+			
+      <joint name="${name}_baro_joint" type="fixed">
+        <parent link="${name}_camera_center"/>
+        <child link="${name}_baro_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </joint>
 			<link name="${name}_baro_link" />
-			<joint name="${name}_baro_joint" type="fixed">
-				<parent link="${name}_camera_center"/>
-				<child link="${name}_baro_link"/>
-				<origin xyz="0 0 0" rpy="0 0 0" />
-			</joint>
+			
+      <joint name="${name}_temp_left_joint" type="fixed">
+        <parent link="${name}_left_camera_frame"/>
+        <child link="${name}_temp_left_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </joint>
 			<link name="${name}_temp_left_link" />
-			<joint name="${name}_temp_left_joint" type="fixed">
-				<parent link="${name}_left_camera_frame"/>
-				<child link="${name}_temp_left_link"/>
-				<origin xyz="0 0 0" rpy="0 0 0" />
-			</joint>
+			
+      <joint name="${name}_temp_right_joint" type="fixed">
+        <parent link="${name}_right_camera_frame"/>
+        <child link="${name}_temp_right_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </joint>
 			<link name="${name}_temp_right_link" />
-			<joint name="${name}_temp_right_joint" type="fixed">
-				<parent link="${name}_right_camera_frame"/>
-				<child link="${name}_temp_right_link"/>
-				<origin xyz="0 0 0" rpy="0 0 0" />
-			</joint>
+			
 		</xacro:if>
 	</xacro:macro>
 </robot>
