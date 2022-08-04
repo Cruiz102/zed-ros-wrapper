@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       - origin: the xyz/rpy offset from the parent link
   -->
 
-	<xacro:macro name="zed_camera" params="name=zed model=zed parent">
+	<xacro:macro name="zed_camera" params="name=zed model=zed parent mesh_file">
 
 		<xacro:if value="${model == 'zed'}">
 			<xacro:property name="baseline" value="0.12" />
@@ -74,15 +74,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<visual>
 				<origin xyz="${screw_offset_x} 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://zed_interfaces/meshes/${model}.stl" />
-				</geometry>
+					<mesh filename="file://${mesh_file}" />
+        </geometry>
 				<material name="${model}_mat" />
 			</visual>
 			<collision>
 				<geometry>
-					<mesh filename="package://zed_interfaces/meshes/${model}.stl" />
+					<mesh filename="file://${mesh_file}" />
 				</geometry>
 			</collision>
+      <inertial>
+        <mass value="0.125" />
+        <inertia ixx="0.000028521" ixy="0.0" ixz="0.0" iyy="0.000465434" iyz="0.0" izz="0.000468458"/>
+      </inertial>
 		</link>
 		
 		<!-- Left Camera -->
@@ -115,7 +119,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </joint>
 		<link name="${name}_right_camera_optical_frame"/>
 		
-		<!-- ZED2 Sensors -->
+		<!-- Sensors -->
 		<xacro:if value="${model == 'zed2' or model == 'zed2i'}">
       <joint name="${name}_mag_joint" type="fixed">
         <parent link="${name}_camera_center"/>
