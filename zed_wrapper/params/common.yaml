@@ -40,7 +40,7 @@ video:
     extrinsic_in_camera_frame: true # if `false` extrinsic parameter in `camera_info` will use ROS native frame (X FORWARD, Z UP) instead of the camera frame (Z FORWARD, Y DOWN) [`true` use old behavior as for version < v3.1]
 
 depth:
-    quality: 1 # '0': NONE, '1': PERFORMANCE, '2': QUALITY, '3': ULTRA, '4': NEURAL
+    quality: 3 # '0': NONE, '1': PERFORMANCE, '2': QUALITY, '3': ULTRA, '4': NEURAL
     sensing_mode: 0 # '0': STANDARD, '1': FILL (not use FILL for robotic applications)
     depth_stabilization: 1 # `0`: disabled, `1`: enabled
     openni_depth_mode: false # 'false': 32bit float meters, 'true': 16bit uchar millimeters
@@ -54,13 +54,13 @@ pos_tracking:
     odometry_frame: "odom" # odometry frame
     area_memory_db_path: "zed_area_memory.area" # file loaded when the node starts to restore the "known visual features" map.
     save_area_memory_db_on_exit: false # save the "known visual features" map when the node is correctly closed to the path indicated by `area_memory_db_path`
-    area_memory: false # Enable to detect loop closure
+    area_memory: true # Enable to detect loop closure
     floor_alignment: false # Enable to automatically calculate camera/floor offset
     initial_base_pose: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0] # Initial position of the `base_frame` -> [X, Y, Z, R, P, Y]
     init_odom_with_first_valid_pose: true # Enable to initialize the odometry with the first valid pose
     path_pub_rate: 2.0 # Camera trajectory publishing frequency
     path_max_count: -1 # use '-1' for unlimited path size
-    two_d_mode: false # Force navigation on a plane. If true the Z value will be fixed to "fixed_z_value", roll and pitch to zero
+    two_d_mode: true # Force navigation on a plane. If true the Z value will be fixed to "fixed_z_value", roll and pitch to zero
     fixed_z_value: 0.00 # Value to be used for Z coordinate if `two_d_mode` is true
 
 mapping:

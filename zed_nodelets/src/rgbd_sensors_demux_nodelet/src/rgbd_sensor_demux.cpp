@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2020, STEREOLABS.
+// Copyright (c) 2022, STEREOLABS.
 //
 // All rights reserved.
 //
@@ -55,7 +55,7 @@ void RgbdSensorsDemuxNodelet::onInit()
   NODELET_INFO_STREAM(" * Subscribed to topic: " << mSub.getTopic().c_str());
 }
 
-void RgbdSensorsDemuxNodelet::msgCallback(const zed_interfaces::RGBDSensorsPtr &msg)
+void RgbdSensorsDemuxNodelet::msgCallback(const zed_interfaces::RGBDSensorsPtr& msg)
 {
   if (!msg->rgb.header.stamp.isZero())
   {

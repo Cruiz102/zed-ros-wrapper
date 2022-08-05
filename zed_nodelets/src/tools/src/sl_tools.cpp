@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2020, STEREOLABS.
+// Copyright (c) 2022, STEREOLABS.
 //
 // All rights reserved.
 //
@@ -138,11 +138,10 @@ bool file_exist(const std::string& name)
 namespace fs = std::experimental::filesystem;
 std::string resolveFilePath(std::string file_path)
 {
-  if(file_path.empty())
+  if (file_path.empty())
   {
     return file_path;
   }
-
 
   std::string abs_path = file_path;
   if (file_path[0] == '~')
@@ -173,7 +172,7 @@ std::string resolveFilePath(std::string file_path)
       return std::string();
     }
   }
-  else if(file_path[0] != '/')
+  else if (file_path[0] != '/')
   {
     fs::path current_path = fs::current_path();
     abs_path = current_path.string() + "/" + file_path;

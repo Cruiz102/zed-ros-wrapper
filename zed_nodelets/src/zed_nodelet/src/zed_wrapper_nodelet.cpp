@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2020, STEREOLABS.
+// Copyright (c) 2022, STEREOLABS.
 //
 // All rights reserved.
 //
@@ -1722,7 +1722,11 @@ void ZEDWrapperNodelet::start_pos_tracking()
     if (mAreaMemDbPath != "" && !sl_tools::file_exist(mAreaMemDbPath))
     {
       posTrackParams.area_file_path = "";
-      NODELET_WARN_STREAM("area_memory_db_path [" << mAreaMemDbPath << "] doesn't exist or is unreachable. ");
+      NODELET_WARN_STREAM("area_memory_db_path [" << mAreaMemDbPath
+                                                  << "] doesn't exist or is unreachable. Using runtime information. "
+                                                     "To create the file call the 'save_area_memory' service or set "
+                                                     "the parameter 'pos_tracking/save_area_memory_db_on_exit' to "
+                                                     "true. ");
       if (mSaveAreaMapOnClosing)
       {
         NODELET_INFO_STREAM(
@@ -1737,7 +1741,7 @@ void ZEDWrapperNodelet::start_pos_tracking()
   }
   else
   {
-    posTrackParams.area_file_path = ""; 
+    posTrackParams.area_file_path = "";
   }
 
   posTrackParams.enable_imu_fusion = mImuFusion;
