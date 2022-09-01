@@ -1690,7 +1690,20 @@ void ZEDWrapperNodelet::start_pos_tracking()
     if (elapsed > 10000)
     {
       NODELET_WARN(" !!! Failed to get static transforms. Is the 'ROBOT STATE PUBLISHER' node correctly working? ");
-      break;
+
+      if(!mSensor2BaseTransfValid)
+      {
+        NODELET_WARN("   - Failed to get 'Sensor -> Base' transform.");
+      }
+      if(!mSensor2CameraTransfValid)
+      {
+        NODELET_WARN("   - Failed to get 'Sensor -> Camera' transform.");
+      }
+      if(!mCamera2BaseTransfValid)
+      {
+        NODELET_WARN("   - Failed to get 'Camera -> Base' transform.");
+      }
+      return;
     }
 
   } while (transformOk == false);
