@@ -39,6 +39,9 @@
 
 #include "sl_tools.h"
 
+// Custom Detector
+#include "aimod.hpp"
+
 // Dynamic reconfiguration
 #include <zed_nodelets/ZedConfig.h>
 
@@ -77,6 +80,7 @@
 #include <memory>
 #include <mutex>
 #include <thread>
+
 
 namespace zed_nodelets {
 class ZEDWrapperNodelet : public nodelet::Nodelet {
@@ -406,6 +410,10 @@ private:
     int mVerMajor;
     int mVerMinor;
     int mVerSubMinor;
+
+
+    //Custom Yolov7 Detector
+    Ai yolov7Detector;
 
     // ROS
     ros::NodeHandle mNh;

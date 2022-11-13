@@ -787,6 +787,13 @@ void ZEDWrapperNodelet::readParameters()
 
         NODELET_INFO_STREAM(" * Detection model\t\t-> " << sl::toString(mObjDetModel));
 
+        if(mObjDetModel == sl::DETECTION_MODEL::CUSTOM_BOX_OBJECTS){
+            // TODO:: Add custom object detection path parameter in the yaml file and in the header file add the variable.
+            mNhNs.getParam("object_detection/custom_objects_path", mObjDetCustomObjectsPath);
+            mObjDetCustomObjectsPath = sl_tools::resolveFilePath(mObjDetCustomObjectsPath);
+            NODELET_INFO_STREAM(" * Custom objects path\t\t-> " << mObjDetCustomObjectsPath.c_str());
+        }
+
         if (mObjDetModel == sl::DETECTION_MODEL::HUMAN_BODY_ACCURATE || mObjDetModel == sl::DETECTION_MODEL::HUMAN_BODY_MEDIUM || mObjDetModel == sl::DETECTION_MODEL::HUMAN_BODY_FAST) {
             mNhNs.getParam("object_detection/body_fitting", mObjDetBodyFitting);
             NODELET_INFO_STREAM(" * Body fitting\t\t\t-> " << (mObjDetBodyFitting ? "ENABLED" : "DISABLED"));
@@ -4328,6 +4335,15 @@ void ZEDWrapperNodelet::processDetectedObjects(ros::Time t)
     objectTracker_parameters_rt.object_class_filter = mObjDetFilter;
 
     sl::Objects objects;
+    sl::Mat left_image;
+    // **In here we append our code **
+
+    // Get the left image
+    yolov7Detector = AI("path of the yaml file of the tensorRT model");
+    mZed.retrieveImage(left_image, sl::VIEW::LEFT);
+    custom_objs = yolov7Detector.detect(left_image);
+
+    mZed.ingestCustomBoxObjects(custom_objs);
 
     sl::ERROR_CODE objDetRes = mZed.retrieveObjects(objects, objectTracker_parameters_rt);
 
