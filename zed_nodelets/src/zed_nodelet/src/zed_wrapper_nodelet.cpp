@@ -4335,13 +4335,15 @@ void ZEDWrapperNodelet::processDetectedObjects(ros::Time t)
     objectTracker_parameters_rt.object_class_filter = mObjDetFilter;
 
     sl::Objects objects;
-    sl::Mat left_image;
-    // **In here we append our code **
-
-    // Get the left image
+    // **In here we append our code *
+    // Check if we select Custom_Detector on the parameters
+    if(mObjDetModel == sl::DETECTION_MODEL::CUSTOM_BOX_OBJECTS){
+    sl::Mat left_image; 
     yolov7Detector = AI("path of the yaml file of the tensorRT model");
     mZed.retrieveImage(left_image, sl::VIEW::LEFT);
     custom_objs = yolov7Detector.detect(left_image);
+
+    }
 
     mZed.ingestCustomBoxObjects(custom_objs);
 

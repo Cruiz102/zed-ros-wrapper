@@ -38,6 +38,23 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
+# TensorRT
+set(TENSORRT_ROOT /usr/src/tensorrt/)
+find_path(TENSORRT_INCLUDE_DIR NvInfer.h
+        HINTS ${TENSORRT_ROOT} PATH_SUFFIXES include/)
+message(STATUS "Found TensorRT headers at ${TENSORRT_INCLUDE_DIR}")
+
+set(MODEL_INCLUDE ../code/includes)
+set(MODEL_LIB_DIR libs)
+#YAML reader dependency
+set(YAML_INCLUDE ../depends/yaml-cpp/include)
+set(YAML_LIB_DIR ../depends/yaml-cpp/libs)
+
+include_directories(${MODEL_INCLUDE} ${YAML_INCLUDE})
+link_directories(${MODEL_LIB_DIR} ${YAML_LIB_DIR})
+
+
+#ROS dependencies
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     image_transport
