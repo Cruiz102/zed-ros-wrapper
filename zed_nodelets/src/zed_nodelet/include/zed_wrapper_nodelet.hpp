@@ -415,6 +415,8 @@ private:
     //Custom Yolov7 Detector
     Ai yolov7Detector;
 
+    // Path of the YAML file of the model
+    String modelYamlPath; 
     // ROS
     ros::NodeHandle mNh;
     ros::NodeHandle mNhNs;
