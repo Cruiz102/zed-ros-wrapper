@@ -1,13 +1,14 @@
 #ifndef __AI_MODULE__
 #define __AI_MODULE__
-#include <filesystem>
+// #include <filesystem>
+#include <experimental/filesystem>
 #include <opencv2/opencv.hpp>
 
 // We have to include the Zed Camera
-#include <"sl/Camera.hpp">
+#include <sl/Camera.hpp>
 
 // This is the file from the Detector of Yolov7
-#include<"yolov7.h">
+#include <"yolov7.h">
 
 
 // This variable is used for storing the CustomDetectedObjects that
@@ -18,6 +19,8 @@ using CustomDetectedObjects = std::vector<CustomBoxObjectData>;
 
 // We created a new Class that inherits from the yolov7 detector to redifined
 // the method DrawResults.
+
+namespace zed_nodelets{
 class Yolov7 : yolov7{
 public:
 void DrawResults(const std::vector<ClassRes> &results, std::vector<cv::Mat> &vec_img,
@@ -70,4 +73,6 @@ public:
          */
         void close();
 };
+
+}
 #endif

@@ -112,10 +112,6 @@ make -j
 mkdir libs build
 cp ../bin/libyolov7.so ./libs/
 ```
-### Dowload the YAML dependency
-
-
-
 
 
 

@@ -140,6 +140,7 @@ add_library(ZEDNodelets
     ${ZED_NODELET_SRC}
     ${RGBD_SENS_SYNC_SRC}
     ${RGBD_SENS_DEMUX_SRC}
+    ${CUSTOM_DETECTOR}
 )
 target_include_directories(ZEDNodelets PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(ZEDNodelets ${LINK_LIBRARIES})
