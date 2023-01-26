@@ -51,7 +51,7 @@ The zed_ros_wrapper is a catkin package. It depends on the following ROS package
 Open a terminal, clone the repository, update the dependencies and build the packages:
 
     $ cd ~/catkin_ws/src
-    $ git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git
+    $ git clone --recursive https://github.com/Cruiz102/zed-ros-wrapper.git
     $ cd ../
     $ rosdep install --from-paths src --ignore-src -r -y
     $ catkin_make -DCMAKE_BUILD_TYPE=Release
