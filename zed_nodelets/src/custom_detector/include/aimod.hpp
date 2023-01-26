@@ -8,7 +8,7 @@
 #include <sl/Camera.hpp>
 
 // This is the file from the Detector of Yolov7
-#include <"yolov7.h">
+#include "yolov7.h"
 
 
 // This variable is used for storing the CustomDetectedObjects that

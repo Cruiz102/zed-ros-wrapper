@@ -1,5 +1,6 @@
-#include "aimod/aimod.hpp"
+#include "aimod.hpp"
 
+namespace zed_nodelets {
     Yolov7::DrawResults(const std::vector<DetectRes> &detections, std::vector<cv::Mat> vec_img) {
     std::vector<cv::Mat> org_img = vec_img;
     std::vector<Bbox> rects = detections.det_results;
@@ -107,6 +108,7 @@ sl::CustomBoxObjectData AI::detect_objects(std::vector<cv::Mat> &frames) {
 
     return objects_in;
 }
+}
 
  sl::CustomBoxObjectData AI::detect(<sl::Mat> &image) {
     // Inference need to be a Vector type. So we are creating
@@ -124,4 +126,6 @@ void AI::close() {
 
 AI::~AI() {
     AI::close();
+}
+
 }
