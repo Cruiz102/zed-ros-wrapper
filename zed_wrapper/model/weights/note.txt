@@ -1,0 +1,4 @@
+Put in this Folder the Export ONNX file, 
+the trt file, and the .names file with the 
+labels of the object. Make sure that the labels are in the 
+correct order.

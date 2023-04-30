@@ -789,7 +789,7 @@ void ZEDWrapperNodelet::readParameters()
 
         if(mObjDetModel == sl::DETECTION_MODEL::CUSTOM_BOX_OBJECTS){
             // TODO:: Add custom object detection path parameter in the yaml file and in the header file add the variable.
-            mNhNs.getParam("object_detection/", modelYamlPath);
+            mNhNs.getParam("object_detection/model_yaml_path", modelYamlPath);
             NODELET_INFO_STREAM(" * Custom objects path\t\t-> ", modelYamlPath);
         }
 
@@ -3264,6 +3264,7 @@ void ZEDWrapperNodelet::device_poll_thread_func()
 
         // Run the loop only if there is some subscribers or SVO is active
         if (mGrabActive) {
+
             std::lock_guard<std::mutex> lock(mPosTrkMutex);
 
             // Note: ones tracking is started it is never stopped anymore to not lose tracking information
@@ -3309,6 +3310,8 @@ void ZEDWrapperNodelet::device_poll_thread_func()
             mRgbDepthDataRetrieved = false;
             mGrabStatus = mZed.grab(runParams);
             mCamDataMutex.unlock();
+
+            
 
             // cout << toString(grab_status) << endl;
             if (mGrabStatus != sl::ERROR_CODE::SUCCESS) {

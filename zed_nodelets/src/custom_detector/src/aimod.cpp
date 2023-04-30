@@ -1,24 +1,6 @@
 #include "aimod.hpp"
 
 namespace zed_nodelets {
-    Yolov7::DrawResults(const std::vector<DetectRes> &detections, std::vector<cv::Mat> vec_img) {
-    std::vector<cv::Mat> org_img = vec_img;
-    std::vector<Bbox> rects = detections.det_results;
-    if (channel_order == "BGR")
-        cv::cvtColor(org_img, org_img, cv::COLOR_BGR2RGB);
-    for(const auto &rect : rects) {
-        char t[256];
-        sprintf(t, "%.2f", rect.prob);
-        std::string name = class_labels[rect.classes] + "-" + t;
-        cv::putText(org_img, name, cv::Point(rect.x - rect.w / 2, rect.y - rect.h / 2 - 5),
-                cv::FONT_HERSHEY_COMPLEX, 0.7, class_colors[rect.classes], 2);
-        cv::Rect rst(rect.x - rect.w / 2, rect.y - rect.h / 2, rect.w, rect.h);
-        cv::rectangle(org_img, rst, class_colors[rect.classes], 2, cv::LINE_8, 0);
-    }
-    return org_img;
-    }
-
-
 
 /**
  * Convert Zed images to OpenCV images
@@ -46,9 +28,8 @@ cv::Mat zedMat2cvMat(sl::Mat input) {
     return cv::Mat(input.getHeight(), input.getWidth(), cv_type, input.getPtr<sl::uchar1>(sl::MEM::CPU));
 }
 
-AI::AI(std::string input_yaml, bool record, std::string output_path, int fps) {
-    //Set recording flag
-    recording = record;
+AI::AI(std::string input_yaml) {
+
     
     // Check if the directory is a yaml document.
     if(std::filesystem::path(input_yaml) != "yaml"){
@@ -58,22 +39,13 @@ AI::AI(std::string input_yaml, bool record, std::string output_path, int fps) {
     // The YAML::LoadFile function is already imported when using the Yolov7 detector.
     YAML::Node root = YAML::LoadFile(input_yaml);
     Yolov7 yolov7 = new Yolov7(root["yolov7"]);
-    YOLOv7.LoadEngine();
-
-    if(recording) {
-        //Start the CV Video Writer
-        out_vid = cv::VideoWriter(output_path, cv::VideoWriter::fourcc('M','P','E','G'), fps, cv::Size(1920, 1080));
-    }
+    yolov7.LoadEngine();
 }
 // All function that return DetectedObjects now will return CustomobjectData
 sl::CustomBoxObjectData AI::detect_objects(std::vector<cv::Mat> &frames) {
     //
     sl::CustomBoxObjectData results;
     std::vector<sl::CustomBoxObjectData> objects_in;
-    
-    cv::Mat annotated_img;
-    if(recording)
-        cv::cvtColor(frame, annotated_img, cv::COLOR_BGRA2BGR);
 
     //Predict items from the frames
     std::vector<DetectRes> predictions = yolov7->InferenceImages(frames);
@@ -99,16 +71,11 @@ sl::CustomBoxObjectData AI::detect_objects(std::vector<cv::Mat> &frames) {
         tmp.is_grounded = true; // objects are moving on the floor plane and tracked in 2D only
         objects_in.push_back(tmp);
 
-
-    // Add the new annotated frame to the video.   
-    if(recording){
-        annotated_img = yolov7->DrawResults(predictions, frames);
-        out_vid.write(annotated_img);
-    }
-
     return objects_in;
+    }
 }
-}
+
+
 
  sl::CustomBoxObjectData AI::detect(<sl::Mat> &image) {
     // Inference need to be a Vector type. So we are creating
@@ -117,15 +84,5 @@ sl::CustomBoxObjectData AI::detect_objects(std::vector<cv::Mat> &frames) {
     vect.push_back(zedMat2cvMat(image));
     return this->detect_objects(vect);
 }
-
-void AI::close() {
-    if(recording){
-        out_vid.release();
-    }
-}
-
-AI::~AI() {
-    AI::close();
-}
-
-}
+    
+    } // namespace zed_nodelets

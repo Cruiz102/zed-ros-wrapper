@@ -26,6 +26,44 @@ or
 - [ZED SDK **≥ 3.8**](https://www.stereolabs.com/developers/) and its dependency [CUDA](https://developer.nvidia.com/cuda-downloads)
 - [ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
+
+## Rumarino Custom Detector implementation
+Inorder to use the yolov7 custom detector you must dowload the following packages.
+ - TensorRT Inference Model
+ - YAML-cpp
+ - OpenCV
+
+ Brief description of the packages. The TensortRT Inference model is the inference model of our Yolov7 detector using TensorRT. TensortRT have a lot of advantage and some of them are optimize computational graphs for making inference in our models. This packages only works when using a Nvidia GPU, that in our case is perfect because our current machine is a Jetson TX2. For using the detector in our code we must give him a YAML file that contains the onnx model, the weights and the objects information, for more info about the TensortRT detector visit the repositorie of the model. last but not least OpenCV is the core librerie that uses the detector for modyfying and reading the images for processing the objects.
+
+### Dowload OpenCV
+```bash
+bash ./opencv_dependencies
+```
+
+### YAML-Cpp
+
+First you can Dowload the repo from here.
+```bash
+git clone https://github.com/jbeder/yaml-cpp.git
+```
+Then compile it with cmake.
+```bash
+mkdir build && cd build
+cmake ..
+make -j
+```
+
+### Dowload amd Install TensortRT Inference
+```bash
+git clone https://github.com/linghu8812/tensorrt_inference.git
+cd tensorrt_inference/project
+mkdir build && cd build
+cmake ..
+make -j
+mkdir libs build
+cp ../bin/libyolov7.so ./libs/
+```
+
 ### Build the repository
 
 The zed_ros_wrapper is a catkin package. It depends on the following ROS packages:
@@ -71,49 +109,6 @@ Remember to always clean the cache of your catkin workspace before compiling wit
     $ rm -rf build
     $ rm -rf devel
     $ catkin_make -DCMAKE_BUILD_TYPE=Release
-
-## Rumarino Custom Detector implementation
-Inorder to use the yolov7 custom detector you must dowload the following packages.
- - TensorRT Inference Model
- - YAML-cpp
- - OpenCV
-
- Brief description of the packages. The TensortRT Inference model is the inference model of our Yolov7 detector using TensorRT. TensortRT have a lot of advantage and some of them are optimize computational graphs for making inference in our models. This packages only works when using a Nvidia GPU, that in our case is perfect because our current machine is a Jetson TX2. For using the detector in our code we must give him a YAML file that contains the onnx model, the weights and the objects information, for more info about the TensortRT detector visit the repositorie of the model. last but not least OpenCV is the core librerie that uses the detector for modyfying and reading the images for processing the objects.
-
-### Dowload OpenCV
-```bash
-bash ./opencv_dependencies
-```
-
-### YAML-Cpp
-
-First you can Dowload the repo from here.
-```bash
-git clone https://github.com/jbeder/yaml-cpp.git
-```
-Then compile it with cmake.
-```bash
-mkdir build && cd build
-cmake ..
-make -j
-```
-
-### Dowload TensortRT Inference
-```bash
-git clone https://github.com/linghu8812/tensorrt_inference.git
-```
-Compile the Project
-
-```bash
-cd tensorrt_inference/project
-mkdir build && cd build
-cmake ..
-make -j
-mkdir libs build
-cp ../bin/libyolov7.so ./libs/
-```
-
-
 
 
 ##  Run the ZED wrapper
