@@ -11,3 +11,4 @@ yolov7:
     agnostic:      False
     strides:       [8, 16, 32, 64]
     num_anchors:   [3,  3,  3,  3]
+
